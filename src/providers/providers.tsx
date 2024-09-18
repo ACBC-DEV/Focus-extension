@@ -21,7 +21,7 @@ interface GlobalStateProviderProps {
 	children: ReactNode;
 }
 
-export const Providers = ({
+export const Provider = ({
 	children,
 }: GlobalStateProviderProps): JSX.Element => {
 	const [open, setOpen] = useState(false);
@@ -35,6 +35,7 @@ export const Providers = ({
 		});
 		chrome.storage.local.get("focusMode", ({ focusMode }) => {
 			if (focusMode) {
+				console.log("there", focusMode);
 				setFocus(focusMode);
 			}
 		});

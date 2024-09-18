@@ -1,13 +1,13 @@
 import "./index.css";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { Provider } from "@/providers/providers";
 import Popup from "@/Popup.tsx";
-import { Providers } from "./providers/providers";
 
 createRoot(document.getElementById("root") as HTMLElement).render(
 	<StrictMode>
-		<Providers>
+		<Provider>
 			<Popup />
-		</Providers>
+		</Provider>
 	</StrictMode>,
 );

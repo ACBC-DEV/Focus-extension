@@ -16,5 +16,8 @@
     "type": "module"
   }
   ,
-  "permissions": ["tabs", "storage"]
+  "permissions": ["tabs", "storage","webRequest"]
+  ,"host_permissions": [
+    "<all_urls>"
+  ]
 }

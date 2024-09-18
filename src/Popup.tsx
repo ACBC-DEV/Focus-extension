@@ -4,15 +4,8 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Dialog from "@/components/Dialog";
 
-// const defaultToBlock = [
-
-// ];
-
 function Popup() {
 	const { focus, toogleFocus, links, deleteLink } = useGlobal();
-	// const [focus, setFocus] = useState(false);
-	// const [open, setOpen] = useState(false);
-	// const [toBlock, setToBlock] = useState<TBlock[]>([]);
 
 	const startFocusMode = () => {
 		toogleFocus(!focus);

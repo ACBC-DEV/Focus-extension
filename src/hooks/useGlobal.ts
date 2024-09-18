@@ -1,25 +1,26 @@
 import { GlobalStateContext } from "@/providers/providers";
 import type { TLinks } from "@/types";
-import { useContext } from "react";
-
+import { useContext, useEffect } from "react";
+import { sendMessage } from "webext-bridge/popup";
 export const useGlobal = () => {
 	const context = useContext(GlobalStateContext);
 	const { setLinks, links, focus, open, setFocus, setOpen } = context;
-	const updateStorage = async (key: "blockedUrls" | "focusMode") => {
-		if (key === "blockedUrls") {
-			await chrome.storage.local.set({ blockedUrls: links });
-		} else {
-			await chrome.storage.local.set({ focusMode: focus });
-		}
-		chrome.runtime.sendMessage({ type: "refresh" });
-	};
+
+	useEffect(() => {
+		chrome.action.setBadgeText({ text: focus ? "ON" : "" });
+		chrome.action.setBadgeBackgroundColor({
+			color: focus ? "green" : [0, 0, 0, 0],
+		});
+	}, [focus]);
 	const addLink = (newLink: TLinks) => {
-		setLinks([...links, newLink]);
-		updateStorage("blockedUrls");
+		const newLinks = [...links, newLink];
+		setLinks(newLinks);
+		sendMessage("updateBlockedUrls", { data: newLinks }, "background");
 	};
 	const toogleFocus = (value = false) => {
 		setFocus(value);
-		updateStorage("focusMode");
+		chrome.storage.local.set({ focusMode: value });
+		sendMessage("focusActive", { data: value }, "background");
 	};
 	const deleteLink = (id: number) => {
 		setLinks(links.filter((item) => item.id !== id));
