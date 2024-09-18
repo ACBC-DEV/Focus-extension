@@ -1,5 +1,12 @@
 import type { TLinks } from "@/types";
-import { createContext, useEffect, useState, type ReactNode } from "react";
+import {
+	createContext,
+	useEffect,
+	useMemo,
+	useState,
+	type ReactNode,
+} from "react";
+import { sendMessage } from "webext-bridge/popup";
 
 // Definir el tipo de los valores que manejará nuestro contexto
 interface GlobalStateContextType {
@@ -28,22 +35,24 @@ export const Provider = ({
 	const [focus, setFocus] = useState(false);
 	const [links, setLinks] = useState<TLinks[]>([]);
 	useEffect(() => {
-		chrome.storage.local.get("blockedUrls", ({ blockedUrls }) => {
+		chrome.storage.local.get(["blockedUrls", "focusMode"], (result) => {
+			const { blockedUrls, focusMode } = result;
 			if (blockedUrls) {
 				setLinks(blockedUrls);
 			}
-		});
-		chrome.storage.local.get("focusMode", ({ focusMode }) => {
 			if (focusMode) {
 				console.log("there", focusMode);
 				setFocus(focusMode);
+				sendMessage("focusActive", { data: focusMode }, "background");
 			}
 		});
 	}, []);
+	const contextValue = useMemo(
+		() => ({ open, setOpen, focus, setFocus, links, setLinks }),
+		[open, focus, links],
+	);
 	return (
-		<GlobalStateContext.Provider
-			value={{ open, setOpen, focus, setFocus, links, setLinks }}
-		>
+		<GlobalStateContext.Provider value={contextValue}>
 			{children}
 		</GlobalStateContext.Provider>
 	);

@@ -1,7 +1,9 @@
 import { GlobalStateContext } from "@/providers/providers";
 import type { TLinks } from "@/types";
+
 import { useContext, useEffect } from "react";
 import { sendMessage } from "webext-bridge/popup";
+
 export const useGlobal = () => {
 	const context = useContext(GlobalStateContext);
 	const { setLinks, links, focus, open, setFocus, setOpen } = context;
@@ -15,7 +17,7 @@ export const useGlobal = () => {
 	const addLink = (newLink: TLinks) => {
 		const newLinks = [...links, newLink];
 		setLinks(newLinks);
-		sendMessage("updateBlockedUrls", { data: newLinks }, "background");
+		chrome.storage.local.set({ blockedUrls: newLinks });
 	};
 	const toogleFocus = (value = false) => {
 		setFocus(value);
@@ -23,7 +25,9 @@ export const useGlobal = () => {
 		sendMessage("focusActive", { data: value }, "background");
 	};
 	const deleteLink = (id: number) => {
-		setLinks(links.filter((item) => item.id !== id));
+		const blockeFiltered = links.filter((item) => item.id !== id);
+		setLinks(blockeFiltered);
+		chrome.storage.local.set({ blockedUrls: blockeFiltered });
 	};
 
 	if (!context) {
