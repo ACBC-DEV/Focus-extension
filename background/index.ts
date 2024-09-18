@@ -27,9 +27,6 @@ chrome.runtime.onInstalled.addListener(async () => {
 	chrome.storage.local.set({ focusMode: false });
 });
 
-onMessage("updateBlockedUrls", async ({ data }) => {
-	chrome.storage.local.set({ blockedUrls: data });
-});
 onMessage("focusActive", async ({ data }) => {
 	handleFocusModeChange(data);
 });
