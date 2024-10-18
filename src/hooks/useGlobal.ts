@@ -22,7 +22,7 @@ export const useGlobal = () => {
 	const toogleFocus = (value = false) => {
 		setFocus(value);
 		chrome.storage.local.set({ focusMode: value });
-		sendMessage("focusActive", { data: value }, "background");
+		sendMessage("focusActive", value, "background");
 	};
 	const deleteLink = (id: number) => {
 		const blockeFiltered = links.filter((item) => item.id !== id);

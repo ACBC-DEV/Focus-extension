@@ -15,5 +15,18 @@
 		"service_worker": "background.js",
 		"type": "module"
 	},
-	"permissions": ["tabs", "storage" ]
+
+	"permissions": [
+		"tabs",
+		"storage",
+		"declarativeNetRequest",
+		"declarativeNetRequestFeedback"
+	],
+	"host_permissions": ["*://*/*"],
+	"web_accessible_resources": [
+		{
+			"resources": ["/redirect/*"],
+			"matches": ["<all_urls>"]
+		}
+	]
 }

@@ -41,7 +41,7 @@ export const Provider = ({
 				setLinks(blockedUrls);
 			}
 			if (focusMode) {
-				console.log("there", focusMode);
+				// console.log("there", focusMode);
 				setFocus(focusMode);
 				sendMessage("focusActive", { data: focusMode }, "background");
 			}
